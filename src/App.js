@@ -1,26 +1,62 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { withRouter, Route } from 'react-router-dom';
+import Zipcode from './components/Zipcode';
+import { getRest } from './services/api-helper';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      restaurants: [],
+      formData: {
+        zipcode: ''
+      }
+    }
+
+  }
+
+  handleChange = (e) => {
+    const { name, value } = e.target
+    this.setState({
+      formData: {
+        [name]: value
+      }
+    })
+  }
+
+
+  handleSubmit = async (e) => {
+    e.preventDefault();
+    const restaurants = await getRest(this.state.formData.zipcode);
+    this.setState({
+      restaurants 
+    })
+    console.log(this.state)
+  }
+
+  async componentDidMount() {
+    const restaurants = await getRest(this.state.restaurants);
+    this.setState({
+      restaurants
+    })
+  }
+
+
+  render() {
+    return (
+      <div className="app">
+
+        <Zipcode 
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+          restaurants={this.state.restaurants}
+          formData={this.state.formData}
+          />
+
+      </div>
+    );
+  }
 }
 
-export default App;
+export default withRouter(App);
