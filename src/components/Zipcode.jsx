@@ -10,7 +10,8 @@ export default function Zipcode(props) {
           name='zipcode'
           id='zipcode'
           value={props.formData.zipcode}
-          onChange={props.handleChange}/>
+          placeholder='Enter your Zipcode...'
+          onChange={props.handleChange} />
           <button id='submit'>Submit</button>
       </form>
     </div>
